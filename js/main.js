@@ -93,16 +93,42 @@
   lenis.on('scroll', ({ scroll }) => updateNav(scroll));
 
   /* -------------------- Hero banner video intro -------------------- */
-  const videos = document.querySelectorAll('.hero-video');
+  const video = document.getElementById('heroVideo');
   const videoWrap = document.querySelector('.hero-video-wrap');
 
-  videos.forEach(v => {
-    const onReady = () => v.classList.add('loaded');
-    if (v.readyState >= 2) onReady();
-    else v.addEventListener('loadeddata', onReady, { once: true });
-    const playPromise = v.play();
-    if (playPromise) playPromise.catch(() => {});
-  });
+  /* Pick desktop or mobile banner based on viewport; swap on resize */
+  const mobileMQ = window.matchMedia('(max-width: 768px)');
+  let currentVariant = null;
+  function setBannerSource() {
+    if (!video) return;
+    const variant = mobileMQ.matches ? 'mobile' : 'desktop';
+    if (variant === currentVariant) return;
+    currentVariant = variant;
+
+    // Clear old sources
+    video.querySelectorAll('source').forEach(s => s.remove());
+    // Add webm first (preferred), then mp4 fallback
+    ['webm', 'mp4'].forEach(ext => {
+      const s = document.createElement('source');
+      s.src  = `assets/video/banner-${variant}.${ext}`;
+      s.type = ext === 'webm' ? 'video/webm' : 'video/mp4';
+      video.appendChild(s);
+    });
+    video.classList.remove('loaded');
+    video.load();
+    const p = video.play();
+    if (p) p.catch(() => {});
+  }
+  setBannerSource();
+  // Use both 'change' and 'resize' for cross-browser safety
+  mobileMQ.addEventListener ? mobileMQ.addEventListener('change', setBannerSource)
+                            : mobileMQ.addListener(setBannerSource);
+
+  if (video) {
+    const onReady = () => video.classList.add('loaded');
+    if (video.readyState >= 2) onReady();
+    video.addEventListener('loadeddata', onReady);
+  }
 
   const heroTl = gsap.timeline({ delay: 0.2 });
   heroTl
@@ -202,6 +228,53 @@
     card.addEventListener('mouseleave', () => {
       card.style.transform = '';
     });
+  });
+
+  /* -------------------- Lightbox (news images) -------------------- */
+  const lightbox     = document.getElementById('lightbox');
+  const lightboxImg  = document.getElementById('lightboxImg');
+  const lightboxClose= document.getElementById('lightboxClose');
+
+  function openLightbox(src, alt) {
+    if (!lightbox || !lightboxImg) return;
+    lightboxImg.src = src;
+    lightboxImg.alt = alt || '';
+    lightbox.hidden = false;
+    document.body.classList.add('lightbox-open');
+    // next frame → transition in
+    requestAnimationFrame(() => lightbox.classList.add('is-open'));
+  }
+  function closeLightbox() {
+    if (!lightbox) return;
+    lightbox.classList.remove('is-open');
+    document.body.classList.remove('lightbox-open');
+    // wait for fade-out then hide
+    setTimeout(() => {
+      lightbox.hidden = true;
+      if (lightboxImg) lightboxImg.src = '';
+    }, 320);
+  }
+
+  document.querySelectorAll('.news-card').forEach(card => {
+    card.addEventListener('click', (e) => {
+      const img = card.querySelector('img');
+      if (!img) return;
+      e.preventDefault();
+      openLightbox(img.currentSrc || img.src, img.alt);
+    });
+  });
+
+  if (lightbox) {
+    // clicking backdrop (but not the image) closes
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
+  }
+  if (lightboxClose) {
+    lightboxClose.addEventListener('click', closeLightbox);
+  }
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && lightbox && !lightbox.hidden) closeLightbox();
   });
 
 })();

@@ -52,25 +52,14 @@
 
 <!-- ========== Hero ========== -->
 <header id="top" class="hero hero--video">
-  <!-- Banner video (desktop widescreen + mobile stacked, text baked in) -->
-  <div class="hero-video-wrap" aria-hidden="true">
-    <!-- Mobile portrait stacked version (sphere over text) -->
-    <video
-      id="heroVideoMobile"
-      class="hero-video hero-video--mobile"
-      autoplay muted loop playsinline
-      poster="assets/video/banner-poster.jpg">
-      <source src="assets/video/banner-mobile.webm" type="video/webm" />
-      <source src="assets/video/banner-mobile.mp4"  type="video/mp4" />
-    </video>
-    <!-- Desktop widescreen version (sphere left + text right) -->
+  <!-- Banner video (single element, source swapped by JS based on viewport) -->
+  <div class="hero-video-wrap" id="heroVideoWrap" aria-hidden="true">
     <video
       id="heroVideo"
-      class="hero-video hero-video--desktop"
-      autoplay muted loop playsinline
+      class="hero-video"
+      autoplay muted loop playsinline preload="auto"
       poster="assets/video/banner-poster.jpg">
-      <source src="assets/video/banner-desktop.webm" type="video/webm" />
-      <source src="assets/video/banner-desktop.mp4"  type="video/mp4" />
+      <!-- sources injected by main.js -->
     </video>
   </div>
 
@@ -504,12 +493,12 @@
       <h2 class="section-title">最新動態</h2>
     </div>
     <div class="news-grid">
-      <div class="news-card reveal-up">
+      <button type="button" class="news-card reveal-up" aria-label="點擊放大圖片">
         <img src="assets/images/posts/fb-post1.png" alt="FB 貼文 1" loading="lazy" />
-      </div>
-      <div class="news-card reveal-up" data-delay="0.15">
+      </button>
+      <button type="button" class="news-card reveal-up" data-delay="0.15" aria-label="點擊放大圖片">
         <img src="assets/images/posts/fb-post2.png" alt="FB 貼文 2" loading="lazy" />
-      </div>
+      </button>
     </div>
   </div>
 </section>
@@ -541,6 +530,12 @@
     </div>
   </div>
 </footer>
+
+<!-- ========== Lightbox (for news images) ========== -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="圖片檢視" hidden>
+  <button class="lightbox-close" id="lightboxClose" aria-label="關閉">×</button>
+  <img class="lightbox-img" id="lightboxImg" alt="" />
+</div>
 
 <!-- ========== Scripts (CDN) ========== -->
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>

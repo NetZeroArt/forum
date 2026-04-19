@@ -245,15 +245,18 @@ ul { list-style: none; }
   50%      { opacity: 1; transform: scale(1.08); }
 }
 
-/* Banner video wrapper (2:1 widescreen on desktop, switches to portrait stacked on mobile) */
+/* Banner video wrapper — size controlled by --wrap-w / --wrap-h so single video fits both layouts */
 .hero-video-wrap {
+  /* Desktop default: 2:1 widescreen banner */
+  --wrap-w: clamp(760px, 92vw, 1600px);
+  --wrap-h: calc(var(--wrap-w) / 2);
   position: absolute;
-  top: 50%; left: 50%;
-  /* 2:1 aspect banner */
-  width: clamp(760px, 96vw, 1760px);
-  height: calc(clamp(760px, 96vw, 1760px) / 2);
-  margin-left: calc(clamp(760px, 96vw, 1760px) / -2);
-  margin-top: calc(clamp(760px, 96vw, 1760px) / -4);
+  top: 50%;
+  left: 50%;
+  width: var(--wrap-w);
+  height: var(--wrap-h);
+  margin-left: calc(var(--wrap-w) / -2);
+  margin-top: calc(var(--wrap-h) / -2);
   z-index: 1;
   pointer-events: none;
   will-change: transform;
@@ -266,12 +269,10 @@ ul { list-style: none; }
   /* multiply removes the white background so video blends with light bg */
   mix-blend-mode: multiply;
   opacity: 0;
-  transition: opacity 1.4s ease-out;
+  transition: opacity 1.2s ease-out;
+  background: transparent;
 }
 .hero-video.loaded { opacity: 1; }
-/* Show desktop banner by default, mobile stacked only on small screens */
-.hero-video--mobile { display: none; }
-.hero-video--desktop { display: block; }
 
 .hero-content {
   position: absolute;
@@ -976,13 +977,26 @@ ul { list-style: none; }
   border: 1px solid var(--c-line);
   transition: all 0.4s var(--ease);
   cursor: pointer;
+  /* button reset */
+  padding: 0;
+  background: transparent;
+  font: inherit;
+  color: inherit;
+  display: block;
+  width: 100%;
+  text-align: left;
 }
 .news-card:hover {
   transform: translateY(-6px);
   box-shadow: 0 24px 48px -20px rgba(0,0,0,0.2);
 }
+.news-card:focus-visible {
+  outline: 2px solid var(--c-accent);
+  outline-offset: 4px;
+}
 .news-card img {
   width: 100%;
+  display: block;
   transition: transform 0.6s var(--ease);
 }
 .news-card:hover img {
@@ -991,6 +1005,63 @@ ul { list-style: none; }
 
 @media (max-width: 700px) {
   .news-grid { grid-template-columns: 1fr; }
+}
+
+/* =============== Lightbox =============== */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(10, 14, 12, 0.82);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  opacity: 0;
+  transition: opacity 0.28s var(--ease);
+  cursor: zoom-out;
+}
+.lightbox[hidden] { display: none; }
+.lightbox.is-open { opacity: 1; }
+.lightbox-img {
+  max-width: min(92vw, 1400px);
+  max-height: 88vh;
+  object-fit: contain;
+  border-radius: 6px;
+  box-shadow: 0 40px 120px rgba(0,0,0,0.55);
+  transform: scale(0.94);
+  transition: transform 0.32s var(--ease);
+  cursor: default;
+}
+.lightbox.is-open .lightbox-img { transform: scale(1); }
+.lightbox-close {
+  position: fixed;
+  top: 24px;
+  right: 28px;
+  width: 48px;
+  height: 48px;
+  border: 1px solid rgba(255,255,255,0.35);
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+  font-size: 28px;
+  line-height: 1;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.25s var(--ease);
+  z-index: 1;
+}
+.lightbox-close:hover {
+  background: rgba(255,255,255,0.2);
+  transform: rotate(90deg);
+}
+body.lightbox-open { overflow: hidden; }
+
+@media (max-width: 700px) {
+  .lightbox { padding: 16px; }
+  .lightbox-close { top: 14px; right: 14px; width: 40px; height: 40px; font-size: 24px; }
+  .lightbox-img { max-width: 96vw; max-height: 80vh; }
 }
 
 /* =============== Footer =============== */
@@ -1049,14 +1120,10 @@ ul { list-style: none; }
   .section-head { margin-bottom: 48px; }
   .container { padding: 0 24px; }
   .hero-meta { gap: 24px; }
-  /* Mobile: swap to portrait stacked video (5:7 aspect, sphere over text) */
-  .hero-video--desktop { display: none; }
-  .hero-video--mobile { display: block; }
+  /* Mobile: portrait 5:7 aspect (sphere on top, text on bottom) */
   .hero-video-wrap {
-    width: 82vw;
-    height: calc(82vw * 7 / 5);
-    margin-left: -41vw;
-    margin-top: calc(82vw * 7 / 10 * -1);
+    --wrap-w: 82vw;
+    --wrap-h: calc(var(--wrap-w) * 7 / 5);
   }
   .hero-glow {
     top: 38%; left: 50%;
