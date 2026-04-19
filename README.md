@@ -11,16 +11,20 @@
 
 ```
 zero-art-forum/
-├── index.html          主頁（所有內容）
-├── css/
-│   └── style.css       樣式
-├── js/
-│   └── main.js         動態效果（GSAP + Three.js + Lenis）
+├── index.html                  主頁（所有內容）
+├── css/style.css               樣式（淺色主題 + 永續綠強調色）
+├── js/main.js                  動態效果（GSAP + Lenis）
 ├── assets/
+│   ├── video/
+│   │   ├── banner-desktop.mp4  桌機橫式 banner（2:1，H.264）
+│   │   ├── banner-desktop.webm 桌機橫式 banner（2:1，VP9）
+│   │   ├── banner-mobile.mp4   手機直式 banner（5:7，球體在上/文字在下）
+│   │   ├── banner-mobile.webm  手機直式 banner（VP9）
+│   │   └── banner-poster.jpg   影片封面（載入中顯示，同時作為 OG image）
 │   └── images/
-│       ├── hero/       首屏主視覺（備用）
-│       ├── speakers/   講者照片
-│       └── posts/      FB 貼文圖
+│       ├── hero/               首屏主視覺備份（a1-1, a1-2）
+│       ├── speakers/           8 位講者照片
+│       └── posts/              FB 貼文圖
 └── README.md
 ```
 
@@ -28,15 +32,19 @@ zero-art-forum/
 
 ## 動態效果亮點
 
-- **Three.js 流動粒子背景**（首屏）：五色粒子 + 星空雙層，滑鼠視差。
+- **Hero 橫式 banner 影片**（mp4 + webm 雙格式，文字已設計進影片）：桌機載入 2:1 寬版（球體左、文字右），手機自動切換為 5:7 直式版（球體上、文字下），無需額外 SVG 文字層。
+- **白底消融**：`mix-blend-mode: multiply` 讓影片白底與淺色頁面自然融合，無明顯邊框。
+- **氛圍光環**：球體後方漸層光暈呼吸脈動，桌機版偏左對齊球體中心。
+- **滑鼠視差**：banner 輕微跟隨游標位移，產生景深。
+- **滾動視差**：離開首屏時 banner 下飄並淡出。
 - **Lenis 絲滑滾動**：全站絲滑慣性滾動。
 - **GSAP ScrollTrigger 進場動畫**：所有元素滾動觸發淡入上滑。
-- **分字進場**：Hero 主標題逐字落下+旋轉。
 - **數字遞增**：統計數字滾動到時動態計數。
 - **自訂游標**：黑白混合模式圓環 + 點。
 - **卡片 3D 傾斜**：三大場次卡片滑鼠追蹤 3D hover。
 - **頂部滾動進度條**：漸層色由綠轉橘。
-- **導覽列自動透明／模糊**：離開 Hero 後切換為毛玻璃。
+- **導覽列自動切換**：離開 Hero 後切為毛玻璃狀態。
+- **無障礙**：`prefers-reduced-motion` 使用者會自動停用動畫，影片改顯示靜態海報。
 
 ---
 

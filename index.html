@@ -7,7 +7,7 @@
 <meta name="description" content="2026 年 5 月 3 日，金車文藝中心臺北承德館。藝術創作、策展實務與文化政策跨域對話，共同探索淨零轉型新路徑。" />
 <meta property="og:title" content="新媒體藝術 × 淨零未來 藝術永續論壇" />
 <meta property="og:description" content="2026/5/3 金車文藝中心臺北承德館" />
-<meta property="og:image" content="assets/images/hero/a1-1.png" />
+<meta property="og:image" content="assets/video/banner-poster.jpg" />
 
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -51,54 +51,63 @@
 </nav>
 
 <!-- ========== Hero ========== -->
-<header id="top" class="hero">
-  <canvas id="particleCanvas" class="hero-canvas"></canvas>
-  <div class="hero-overlay"></div>
-
-  <!-- Main visual sphere floating -->
-  <div class="hero-sphere-wrap" id="heroSphereWrap" aria-hidden="true">
-    <img src="assets/images/hero/sphere.png" alt="" class="hero-sphere" id="heroSphere" />
+<header id="top" class="hero hero--video">
+  <!-- Banner video (desktop widescreen + mobile stacked, text baked in) -->
+  <div class="hero-video-wrap" aria-hidden="true">
+    <!-- Mobile portrait stacked version (sphere over text) -->
+    <video
+      id="heroVideoMobile"
+      class="hero-video hero-video--mobile"
+      autoplay muted loop playsinline
+      poster="assets/video/banner-poster.jpg">
+      <source src="assets/video/banner-mobile.webm" type="video/webm" />
+      <source src="assets/video/banner-mobile.mp4"  type="video/mp4" />
+    </video>
+    <!-- Desktop widescreen version (sphere left + text right) -->
+    <video
+      id="heroVideo"
+      class="hero-video hero-video--desktop"
+      autoplay muted loop playsinline
+      poster="assets/video/banner-poster.jpg">
+      <source src="assets/video/banner-desktop.webm" type="video/webm" />
+      <source src="assets/video/banner-desktop.mp4"  type="video/mp4" />
+    </video>
   </div>
 
+  <!-- Ambient glow behind the ball -->
+  <div class="hero-glow" aria-hidden="true"></div>
+
   <div class="hero-content">
-    <div class="hero-date reveal-up">
-      <span class="date-line"></span>
-      <span>2026 . 05 . 03  SUNDAY</span>
-    </div>
-
-    <h1 class="hero-title">
-      <span class="title-zh split-chars">新媒體藝術</span>
-      <span class="title-x">×</span>
-      <span class="title-zh split-chars">淨零未來</span>
-    </h1>
-
-    <p class="hero-sub reveal-up" data-delay="0.6">藝術永續論壇</p>
-    <p class="hero-subtitle reveal-up" data-delay="0.8">
-      藝術創作・策展實務・文化政策　跨域對話<br />
-      共同探索淨零轉型新路徑
-    </p>
-
-    <div class="hero-meta reveal-up" data-delay="1.0">
-      <div class="meta-item">
-        <span class="meta-label">TIME</span>
-        <span class="meta-value">13:00 – 18:10</span>
-      </div>
-      <div class="meta-item">
-        <span class="meta-label">VENUE</span>
-        <span class="meta-value">金車文藝中心 臺北承德館</span>
-      </div>
-      <div class="meta-item">
-        <span class="meta-label">ENTRY</span>
-        <span class="meta-value">免費參加</span>
+    <div class="hero-top">
+      <div class="hero-date reveal-up">
+        <span class="date-line"></span>
+        <span>2026 . 05 . 03  SUNDAY</span>
       </div>
     </div>
 
-    <div class="hero-actions reveal-up" data-delay="1.2">
-      <a href="https://www.accupass.com/event/2604180337011625846411?utm_source=web&utm_medium=search_result_%E7%B6%93%E7%87%9F%E8%87%AA%E5%AA%92%E9%AB%94&utm_campaign=accu_e_"
-         target="_blank" rel="noopener" class="btn-cta">
-         立即報名 <span class="arrow">→</span>
-      </a>
-      <a href="#sessions" class="btn-ghost">查看議程</a>
+    <div class="hero-bottom">
+      <div class="hero-meta reveal-up" data-delay="1.0">
+        <div class="meta-item">
+          <span class="meta-label">TIME</span>
+          <span class="meta-value">13:00 – 18:10</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">VENUE</span>
+          <span class="meta-value">金車文藝中心 臺北承德館</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">ENTRY</span>
+          <span class="meta-value">免費參加</span>
+        </div>
+      </div>
+
+      <div class="hero-actions reveal-up" data-delay="1.2">
+        <a href="https://www.accupass.com/event/2604180337011625846411?utm_source=web&utm_medium=search_result_%E7%B6%93%E7%87%9F%E8%87%AA%E5%AA%92%E9%AB%94&utm_campaign=accu_e_"
+           target="_blank" rel="noopener" class="btn-cta">
+           立即報名 <span class="arrow">→</span>
+        </a>
+        <a href="#sessions" class="btn-ghost">查看議程</a>
+      </div>
     </div>
   </div>
 
@@ -534,7 +543,6 @@
 </footer>
 
 <!-- ========== Scripts (CDN) ========== -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
